@@ -8,7 +8,11 @@ class OysterCard
   end
 
   def top_up(amount)
-    raise "this will go over the limit #{DEFAULT_LIMIT}" if @balance + amount > DEFAULT_LIMIT 
+    raise "this will go over the limit #{DEFAULT_LIMIT}" if @balance + amount > DEFAULT_LIMIT
     @balance += amount
+  end
+
+  def deduct(amount)
+    @balance -= amount
   end
 end
