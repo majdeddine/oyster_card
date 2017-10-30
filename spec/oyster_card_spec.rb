@@ -1,10 +1,9 @@
+require 'oyster_card'
 
-describe Oystercard do
+describe OysterCard do
+  subject(:card) { described_class.new }
 
-# NameError: uninitialized constant Oystercard
-# where: ./spec/oyster_card_spec.rb
-# line : 2
-# this means there is an undefined local variable or method
-# suggestion: require in the file where 'Oystercard' is
-
+  it 'return default balance' do
+    expect(card.balance).to eq(0)
+  end
 end
