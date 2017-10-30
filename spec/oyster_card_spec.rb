@@ -14,5 +14,11 @@ describe OysterCard do
       card.top_up(5)
       expect(card.balance).to eq(5)
     end
+
+    it 'raise error if the amount would push the balance over the limit' do
+      card.top_up(90)
+      message = "this will go over the limit #{OysterCard::DEFAULT_LIMIT}"
+      expect { card.top_up(1) }.to raise_error(message)
+    end
   end
 end
