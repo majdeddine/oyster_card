@@ -18,14 +18,16 @@ class OysterCard
   end
 
   def touch_in
-    true
+    @in_use = true
   end
 
   def touch_out
-    false
+    @in_use = false
   end
 
+private
+
   def in_journey?
-    true
+    @in_use
   end
 end

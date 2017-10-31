@@ -3,9 +3,13 @@ require 'oyster_card'
 describe OysterCard do
   subject(:card) { described_class.new }
 
-  describe '.balance' do
-    it 'return default balance' do
-      expect(card.balance).to eq(0)
+  describe 'attributes' do
+    it '.balance return default balance' do
+      expect(card.balance).to eq(OysterCard::DEFAULT_BALANCE)
+    end
+
+    it 'Checking .in_use is set to false by default' do
+      expect(card.in_use).to eq false
     end
   end
 
@@ -41,17 +45,4 @@ describe OysterCard do
       expect(card.touch_out).to eq(false)
     end
   end
-
-  describe '#in_journey?' do
-    it 'return true' do
-      expect(card.in_journey?).to eq(true)
-    end
-  end
-
-  describe '#in_use' do
-    it 'return false' do
-      expect(card.in_use).to eq(false)
-    end
-  end
-
 end
