@@ -38,11 +38,21 @@ describe OysterCard do
     it 'return true' do
       expect(card.touch_in).to eq(true)
     end
+
+    it 'raise error if card is already in use' do
+      card.touch_in
+      expect { card.touch_in }.to raise_error("card already in use")
+    end
   end
 
   describe '#touch_out' do
     it 'return false' do
+      card.touch_in
       expect(card.touch_out).to eq(false)
+    end
+
+    it 'raise error if card is not in use' do
+      expect { card.touch_out }.to raise_error('card did not touch in')
     end
   end
 end

@@ -18,10 +18,12 @@ class OysterCard
   end
 
   def touch_in
+    raise('card already in use') if in_journey?
     @in_use = true
   end
 
   def touch_out
+    raise('card did not touch in') unless in_journey? 
     @in_use = false
   end
 
