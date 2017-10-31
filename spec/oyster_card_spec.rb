@@ -62,5 +62,10 @@ describe OysterCard do
       card_with_money.touch_in(station)
       expect {card_with_money.touch_out}.to change{card_with_money.balance}.by(-OysterCard::MINIMUM_LIMIT)
     end
+    it 'Forget the entry station on touch out' do
+      card_with_money.touch_in(station)
+      card_with_money.touch_out
+      expect(card_with_money.entry_station).to eq(nil)
+    end
   end
 end

@@ -25,6 +25,7 @@ class OysterCard
   def touch_out
     raise('card did not touch in') unless in_journey?
     deduct(MINIMUM_LIMIT)
+    @entry_station = nil
     @in_use = false
   end
 
