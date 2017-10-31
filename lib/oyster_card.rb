@@ -11,23 +11,21 @@ class OysterCard
   end
 
   def top_up(amount)
-    raise "this will go over the limit #{DEFAULT_LIMIT}" if limit?(amount)
+    top_up_error?(amount)
     @balance += amount
   end
 
   def touch_in(station)
-    raise ('insufficent balance on the card') unless sufficent_money?
-    raise('card already in use') if in_journey?
+    touch_in_error?
     @entry_station = station
 
   end
 
   def touch_out(station)
-    raise('card did not touch in') unless in_journey?
     deduct(MINIMUM_LIMIT)
-    @history << {@entry_station => station}
+    touch_out_error?
+    save_journey(station)
     @entry_station = nil
-
   end
 
 private
@@ -47,5 +45,22 @@ private
 
   def deduct(amount)
     @balance -= amount
+  end
+
+  def top_up_error?(amount)
+    raise "this will go over the limit #{DEFAULT_LIMIT}" if limit?(amount)
+  end
+
+  def touch_in_error?
+    raise ('insufficent balance on the card') unless sufficent_money?
+    raise('card already in use') if in_journey?
+  end
+
+  def touch_out_error?
+    raise('card did not touch in') unless in_journey?
+  end
+
+  def save_journey(station)
+    @history << {@entry_station => station}
   end
 end
