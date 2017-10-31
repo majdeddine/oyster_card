@@ -1,19 +1,18 @@
 require 'oyster_card'
 
-
-
 describe OysterCard do
+
   subject(:card) { described_class.new }
+
   let(:card_with_money) { described_class.new(5)}
+  
   let(:station)  { double :station }
+
   describe 'attributes' do
     it '.balance return default balance' do
       expect(card.balance).to eq(OysterCard::DEFAULT_BALANCE)
     end
 
-    it 'Checking .in_use is set to false by default' do
-      expect(card.in_use).to eq false
-    end
   end
 
   describe '#top_up' do
@@ -30,9 +29,6 @@ describe OysterCard do
   end
 
   describe '#touch_in' do
-    it 'return true' do
-      expect(card_with_money.touch_in(station)).to eq(true)
-    end
 
      it 'Raise error if insufficent funds' do
         expect {card.touch_in(station)}.to raise_error 'insufficent balance on the card'
@@ -49,10 +45,6 @@ describe OysterCard do
   end
 
   describe '#touch_out' do
-    it 'return false' do
-      card_with_money.touch_in(station)
-      expect(card_with_money.touch_out).to eq(false)
-    end
 
     it 'raise error if card is not in use' do
       expect { card.touch_out }.to raise_error('card did not touch in')
