@@ -5,14 +5,18 @@ describe OysterCard do
   subject(:card) { described_class.new }
 
   let(:card_with_money) { described_class.new(5)}
-  
+
   let(:station)  { double :station }
 
+  let(:exit_station)  { double :station }
   describe 'attributes' do
     it '.balance return default balance' do
       expect(card.balance).to eq(OysterCard::DEFAULT_BALANCE)
     end
 
+    it '.history return an array by default' do
+      expect(card.history).to eq([])
+    end
   end
 
   describe '#top_up' do
@@ -47,17 +51,22 @@ describe OysterCard do
   describe '#touch_out' do
 
     it 'raise error if card is not in use' do
-      expect { card.touch_out }.to raise_error('card did not touch in')
+      expect { card.touch_out(exit_station) }.to raise_error('card did not touch in')
     end
 
     it 'deduct the balance by minimum fare' do
       card_with_money.touch_in(station)
-      expect {card_with_money.touch_out}.to change{card_with_money.balance}.by(-OysterCard::MINIMUM_LIMIT)
+      expect {card_with_money.touch_out(exit_station)}.to change{card_with_money.balance}.by(-OysterCard::MINIMUM_LIMIT)
     end
     it 'Forget the entry station on touch out' do
       card_with_money.touch_in(station)
-      card_with_money.touch_out
+      card_with_money.touch_out(exit_station)
       expect(card_with_money.entry_station).to eq(nil)
+    end
+    it 'add hash to history' do
+      card_with_money.touch_in(station)
+      card_with_money.touch_out(exit_station)
+      expect(card_with_money.history).to include({station => exit_station})
     end
   end
 end

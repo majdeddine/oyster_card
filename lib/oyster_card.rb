@@ -2,11 +2,12 @@ class OysterCard
   DEFAULT_BALANCE = 0
   DEFAULT_LIMIT = 90
   MINIMUM_LIMIT= 1
-  attr_reader :balance, :entry_station
+  attr_reader :balance, :entry_station, :history
 
   def initialize(balance = DEFAULT_BALANCE)
     @balance = balance
     @entry_station = nil
+    @history = []
   end
 
   def top_up(amount)
@@ -21,9 +22,10 @@ class OysterCard
 
   end
 
-  def touch_out
+  def touch_out(station)
     raise('card did not touch in') unless in_journey?
     deduct(MINIMUM_LIMIT)
+    @history << {@entry_station => station}
     @entry_station = nil
 
   end
