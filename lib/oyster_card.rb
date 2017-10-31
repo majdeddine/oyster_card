@@ -14,10 +14,6 @@ class OysterCard
     @balance += amount
   end
 
-  def deduct(amount)
-    @balance -= amount
-  end
-
   def touch_in
     raise ('insufficent balance on the card') unless sufficent_money?
     raise('card already in use') if in_journey?
@@ -26,16 +22,21 @@ class OysterCard
 
   def touch_out
     raise('card did not touch in') unless in_journey?
+    deduct(MINIMUM_LIMIT)
     @in_use = false
   end
 
 private
 
-def sufficent_money?
-  balance > MINIMUM_LIMIT
-end
+  def sufficent_money?
+    balance > MINIMUM_LIMIT
+  end
 
   def in_journey?
     @in_use
+  end
+
+  def deduct(amount)
+    @balance -= amount
   end
 end

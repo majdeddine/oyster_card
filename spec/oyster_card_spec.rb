@@ -27,14 +27,6 @@ describe OysterCard do
     end
   end
 
-  describe '#deduct' do
-    it 'should deduct the specified amount from balance' do
-      card.top_up(10)
-      card.deduct(2)
-      expect(card.balance).to eq(8)
-    end
-  end
-
   describe '#touch_in' do
     it 'return true' do
       expect(card_with_money.touch_in).to eq(true)
@@ -57,6 +49,11 @@ describe OysterCard do
 
     it 'raise error if card is not in use' do
       expect { card.touch_out }.to raise_error('card did not touch in')
+    end
+
+    it 'deduct the balance by minimum fare' do
+      card_with_money.touch_in
+      expect {card_with_money.touch_out}.to change{card_with_money.balance}.by(-OysterCard::MINIMUM_LIMIT)
     end
   end
 end
