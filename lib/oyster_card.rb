@@ -8,6 +8,7 @@ class OysterCard
     @balance = balance
     @entry_station = nil
     @history = []
+    @journey = Journey.new
   end
 
   def top_up(amount)
@@ -22,8 +23,8 @@ class OysterCard
   end
 
   def touch_out(station)
-    deduct(MINIMUM_LIMIT)
     touch_out_error?
+    deduct(MINIMUM_LIMIT)
     save_journey(station)
     @entry_station = nil
   end
@@ -61,6 +62,7 @@ private
   end
 
   def save_journey(station)
-    @history << {@entry_station => station}
+    @history << @journey.save_journey(@entry_station, station)
+    #@history << {entry: @entry_station, exit: station
   end
 end
