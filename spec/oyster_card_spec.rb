@@ -69,4 +69,12 @@ describe OysterCard do
       expect(card_with_money.history).to eq([{entry: station , exit: exit_station}])
     end
   end
+
+  describe '#fare' do
+    it 'deduct a fare of 6 when missing entry or exit station' do
+      card_with_money.touch_in(station)
+      expect{card_with_money.touch_out}.to change{card_with_money.balance}.by(-6*OysterCard::MINIMUM_LIMIT)
+    end
+  end
+
 end

@@ -16,17 +16,21 @@ class OysterCard
     @balance += amount
   end
 
-  def touch_in(station)
+  def touch_in(station='none')
     touch_in_error?
     @entry_station = station
 
   end
 
-  def touch_out(station)
+  def touch_out(station='none')
     touch_out_error?
-    deduct(MINIMUM_LIMIT)
     save_journey(station)
+    fare
     @entry_station = nil
+  end
+
+  def fare
+    @history.last.has_value?('none') ? deduct(6*MINIMUM_LIMIT) : deduct(MINIMUM_LIMIT)
   end
 
 private
