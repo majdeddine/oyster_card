@@ -1,3 +1,5 @@
+require_relative 'journey_log'
+require_relative 'journey'
 class OysterCard
   DEFAULT_BALANCE = 0
   DEFAULT_LIMIT = 90
@@ -9,7 +11,6 @@ class OysterCard
     @entry_station = nil
     #@history = []
     @journey_log = JourneyLog.new
-    @journey = Journey.new
   end
 
   def top_up(amount)
@@ -18,21 +19,26 @@ class OysterCard
   end
 
   def touch_in(station='none')
-    touch_in_error?
-    @entry_station = station
-
+    # touch_in_error?
+  @journey_log.start(station)
   end
 
   def touch_out(station='none')
-    touch_out_error?
-    @journey_log.add_journey(save_journey(station))
-    fare
-    @entry_station = nil
+    # touch_out_error?
+    @journey_log.finish(station)
+    # @journey_log.add(@journey.current_journey)
+    # @journey_log.add_journey(save_journey(station))
+    # fare
   end
 
-  def fare
-    @journey_log.history.last.has_value?('none') ? deduct(6*MINIMUM_LIMIT) : deduct(MINIMUM_LIMIT)
+  def show_history
+    @journey_log.history
   end
+
+  #
+  # def fare
+  #   @journey_log.history.last.has_value?('none') ? deduct(6*MINIMUM_LIMIT) : deduct(MINIMUM_LIMIT)
+  # end
 
 private
 
@@ -59,7 +65,7 @@ private
 
   def touch_in_error?
     raise ('insufficent balance on the card') unless sufficent_money?
-    raise('card already in use') if in_journey?
+    # raise('card already in use') if in_journey?
   end
 
   def touch_out_error?
