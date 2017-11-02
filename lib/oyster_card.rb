@@ -2,12 +2,13 @@ class OysterCard
   DEFAULT_BALANCE = 0
   DEFAULT_LIMIT = 90
   MINIMUM_LIMIT= 1
-  attr_reader :balance, :entry_station, :history
+  attr_reader :balance, :entry_station, :journey_log
 
   def initialize(balance = DEFAULT_BALANCE)
     @balance = balance
     @entry_station = nil
-    @history = []
+    #@history = []
+    @journey_log = JourneyLog.new
     @journey = Journey.new
   end
 
@@ -24,13 +25,13 @@ class OysterCard
 
   def touch_out(station='none')
     touch_out_error?
-    save_journey(station)
+    @journey_log.add_journey(save_journey(station))
     fare
     @entry_station = nil
   end
 
   def fare
-    @history.last.has_value?('none') ? deduct(6*MINIMUM_LIMIT) : deduct(MINIMUM_LIMIT)
+    @journey_log.history.last.has_value?('none') ? deduct(6*MINIMUM_LIMIT) : deduct(MINIMUM_LIMIT)
   end
 
 private
@@ -66,7 +67,7 @@ private
   end
 
   def save_journey(station)
-    @history << @journey.save_journey(@entry_station, station)
+  @journey.save_journey(@entry_station, station)
     #@history << {entry: @entry_station, exit: station
   end
 end

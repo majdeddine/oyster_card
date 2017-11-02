@@ -15,7 +15,7 @@ describe OysterCard do
     end
 
     it '.history return an array by default' do
-      expect(card.history).to eq([])
+      expect(card.journey_log.history).to eq([])
     end
   end
 
@@ -66,7 +66,7 @@ describe OysterCard do
     it 'add hash to history' do
       card_with_money.touch_in(station)
       card_with_money.touch_out(exit_station)
-      expect(card_with_money.history).to eq([{entry: station , exit: exit_station}])
+      expect(card_with_money.journey_log.history).to eq([{entry: station , exit: exit_station}])
     end
   end
 
